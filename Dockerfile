@@ -7,8 +7,8 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y curl
 
-# Fetch latest 7.9 release
-RUN curl -s "http://www.mysqueezebox.com/update/?version=7.9.0&revision=1&geturl=1&os=deb" | xargs curl -o /tmp/lms.deb 
+ENV LMS_DEBFILE http://downloads-origin.slimdevices.com/nightly/7.9/sc/7326393/logitechmediaserver_7.9.0~1455784650_all.deb
+RUN curl -o /tmp/lms.deb $LMS_DEBFILE
 
 # Dependencies first
 RUN echo "deb http://www.deb-multimedia.org jessie main non-free" | tee -a /etc/apt/sources.list && \
@@ -54,7 +54,7 @@ COPY ./supervisord.conf /etc/
 COPY ./start-lms.sh /usr/local/bin
 
 VOLUME ["/mnt/state","/mnt/music","/mnt/playlists"]
-EXPOSE 3483 3483/udp 9000 9090 9005
+EXPOSE 3483 3483/udp 9000 9090 9010
 
 CMD ["/usr/local/bin/start-lms.sh"]
 
