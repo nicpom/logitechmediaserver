@@ -4,7 +4,7 @@ MAINTAINER Justifiably <justifiably@ymail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get upgrade && \
+    apt-get -y upgrade && \
     apt-get install -y curl
 
 ENV LMS_DEBFILE=http://downloads.slimdevices.com/nightly/7.9/sc/5558c96/logitechmediaserver_7.9.0~1464697159_all.deb
