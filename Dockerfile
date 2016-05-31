@@ -4,22 +4,24 @@ MAINTAINER Justifiably <justifiably@ymail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
+    apt-get upgrade && \
     apt-get install -y curl
 
-ENV LMS_DEBFILE http://downloads-origin.slimdevices.com/nightly/7.9/sc/7326393/logitechmediaserver_7.9.0~1455784650_all.deb
+ENV LMS_DEBFILE=http://downloads.slimdevices.com/nightly/7.9/sc/5558c96/logitechmediaserver_7.9.0~1464697159_all.deb
 RUN curl -o /tmp/lms.deb $LMS_DEBFILE
 
 # Dependencies first
 RUN echo "deb http://www.deb-multimedia.org jessie main non-free" | tee -a /etc/apt/sources.list && \
-    curl -s -o /tmp/key.deb https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2015.6.1_all.deb && \
+    curl -s -o /tmp/key.deb https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.3.7_all.deb && \
     dpkg -i /tmp/key.deb && \
     rm -f /tmp/key.deb
 
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y --force-yes \
     supervisor \
     perl5 \
+    libio-socket-ssl-perl \
     locales \
     faad \
     faac \
