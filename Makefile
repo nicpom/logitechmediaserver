@@ -3,5 +3,6 @@ TAG=$(shell echo $(LMS_LATEST) | sed -e s/[^_]*_// | sed -e s/_all.deb// | sed -
 USER=justifiably
 
 build:
+	wget $(LMS_LATEST) -nc -O lms.deb
 	docker build -t $(USER)/logitechmediaserver:$(TAG) .
 	docker tag $(USER)/logitechmediaserver:$(TAG) $(USER)/logitechmediaserver:latest

@@ -4,11 +4,8 @@ MAINTAINER Justifiably <justifiably@ymail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get -y upgrade && \
+    apt-get upgrade -y && \
     apt-get install -y curl
-
-ENV LMS_DEBFILE=http://downloads.slimdevices.com/nightly/7.9/sc/5558c96/logitechmediaserver_7.9.0~1464697159_all.deb
-RUN curl -o /tmp/lms.deb $LMS_DEBFILE
 
 # Dependencies first
 RUN echo "deb http://www.deb-multimedia.org jessie main non-free" | tee -a /etc/apt/sources.list && \
@@ -21,17 +18,29 @@ RUN apt-get update && \
     apt-get install -y --force-yes \
     supervisor \
     perl5 \
-    libio-socket-ssl-perl \
     locales \
     faad \
     faac \
     flac \
     lame \
     sox \
-    wavpack
+    wavpack \
+    ffmpeg
+
+# Dependencies for shairport (https://github.com/disaster123/shairport2_plugin/)
+RUN apt-get install -y --force-yes \
+    	libcrypt-openssl-rsa-perl \
+	libio-socket-inet6-perl \
+	libwww-perl avahi-utils \
+	libio-socket-ssl-perl && \
+        curl -o /tmp/netsdp.deb http://www.inf.udec.cl/~diegocaro/rpi/libnet-sdp-perl_0.07-1_all.deb && \
+	dpkg -i /tmp/netsdp.deb && \
+	rm -f /tmp/netsdp.deb
 
 RUN echo "en_GB.UTF-8 UTF-8" >> /etc/locale.gen && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+
+COPY lms.deb /tmp/lms.deb
 
 # Fix UID for squeezeboxserver user to help with host volumes
 RUN useradd --system --uid 819 -M -s /bin/false -d /usr/share/squeezeboxserver -G nogroup -c "Logitech Media Server user" squeezeboxserver && \
@@ -42,7 +51,8 @@ RUN useradd --system --uid 819 -M -s /bin/false -d /usr/share/squeezeboxserver -
 RUN apt-get -y remove curl && \
     apt-get -y autoremove && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+apt-get install libcrypt-openssl-rsa-perl libio-socket-inet6-perl libwww-perl avahi-utils libio-socket-ssl-perl && \
+     rm -rf /var/lib/apt/lists/*
         
 # Move config dir to allow editing convert.conf
 RUN mkdir -p /mnt/state/etc && \
