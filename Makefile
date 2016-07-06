@@ -2,7 +2,10 @@ LMS_LATEST=$(shell wget -O - -q "http://www.mysqueezebox.com/update/?version=7.9
 TAG=$(shell echo $(LMS_LATEST) | sed -e s/[^_]*_// | sed -e s/_all.deb// | sed -e s/~/-/)
 USER=justifiably
 
+update:
+	if [ "`cat lms-version.txt`" = "$(TAG)" ]; then echo "No update available"; exit 1; fi
+	echo -n $(TAG) > lms-version.txt
+	wget $(LMS_LATEST) -O - > lms.deb
+
 build:
-	wget $(LMS_LATEST) -nc -O lms.deb
-	docker build -t $(USER)/logitechmediaserver:$(TAG) .
-	docker tag $(USER)/logitechmediaserver:$(TAG) $(USER)/logitechmediaserver:latest
+	OTAG=`cat lms-version.txt`; docker build -t $(USER)/logitechmediaserver:$$OTAG .; docker tag $(USER)/logitechmediaserver:$$OTAG $(USER)/logitechmediaserver:latest
