@@ -29,13 +29,13 @@ RUN apt-get update && \
 
 # Dependencies for shairport (https://github.com/disaster123/shairport2_plugin/)
 RUN apt-get install -y --force-yes \
-    	libcrypt-openssl-rsa-perl \
-	libio-socket-inet6-perl \
-	libwww-perl avahi-utils \
-	libio-socket-ssl-perl && \
-        curl -o /tmp/netsdp.deb http://www.inf.udec.cl/~diegocaro/rpi/libnet-sdp-perl_0.07-1_all.deb && \
-	dpkg -i /tmp/netsdp.deb && \
-	rm -f /tmp/netsdp.deb
+    libcrypt-openssl-rsa-perl \
+    libio-socket-inet6-perl \
+    libwww-perl avahi-utils \
+    libio-socket-ssl-perl && \
+    curl -o /tmp/netsdp.deb http://www.inf.udec.cl/~diegocaro/rpi/libnet-sdp-perl_0.07-1_all.deb && \
+    dpkg -i /tmp/netsdp.deb && \
+    rm -f /tmp/netsdp.deb
 
 RUN echo "en_GB.UTF-8 UTF-8" >> /etc/locale.gen && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
@@ -51,8 +51,7 @@ RUN useradd --system --uid 819 -M -s /bin/false -d /usr/share/squeezeboxserver -
 RUN apt-get -y remove curl && \
     apt-get -y autoremove && \
     apt-get clean && \
-apt-get install libcrypt-openssl-rsa-perl libio-socket-inet6-perl libwww-perl avahi-utils libio-socket-ssl-perl && \
-     rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
         
 # Move config dir to allow editing convert.conf
 RUN mkdir -p /mnt/state/etc && \
