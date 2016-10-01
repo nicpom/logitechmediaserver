@@ -9,13 +9,12 @@ RUN apt-get update && \
 
 # Dependencies first
 RUN echo "deb http://www.deb-multimedia.org jessie main non-free" | tee -a /etc/apt/sources.list && \
-    curl -s -o /tmp/key.deb https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.3.7_all.deb && \
-    dpkg -i /tmp/key.deb && \
-    rm -f /tmp/key.deb
+    apt-get update && apt-get install -y --force-yes deb-multimedia-keyring
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y --force-yes \
+# unfortunately this ends up pulling in X server and extra crud.
+# Need --force-yes because not all are signed even with above keyring (libaac etc)
+# - ffmpeg: needed for ALAC
+RUN apt-get install -y --force-yes \
     supervisor \
     perl5 \
     locales \
@@ -63,8 +62,9 @@ RUN mkdir -p /mnt/state/etc && \
 RUN mkdir -p /var/log/supervisor
 COPY ./supervisord.conf /etc/
 COPY ./start-lms.sh /usr/local/bin
+COPY avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 
-VOLUME ["/mnt/state","/mnt/music","/mnt/playlists"]
+VOLUME ["/mnt/state","/srv/music","/srv/playlists"]
 EXPOSE 3483 3483/udp 9000 9090 9010
 
 CMD ["/usr/local/bin/start-lms.sh"]
