@@ -7,7 +7,7 @@ build:
 
 update:
 	if [ "`cat lms-version.txt`" = "$(TAG)" ]; then echo "No update available"; exit 1; fi
-	echo -n $(TAG) > lms-version.txt
+	/bin/echo -n $(TAG) > lms-version.txt
 	wget $(LMS_LATEST) -O - > lms.deb
 
 # Tag latest with current release, in case built from Dockerfile without above recipe
