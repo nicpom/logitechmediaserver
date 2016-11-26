@@ -6,11 +6,18 @@ Runs as non-root user, installs useful dependencies, sets a locale,
 exposes ports needed for various plugins and server discovery and
 allows editing of config files like `convert.conf`.
 
-Build:
+Download the current deb package (I prefer to keep it archived in the repo
+than relying on download remaining available):
 
 ```
-docker build -t justifiably/logitechmediaserver .
+make update
 ```
+
+Build the image:
+```
+make build
+```
+(edit `USER` in `Makefile` if you want).
 
 Run:
 
