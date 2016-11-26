@@ -4,10 +4,11 @@ logitechmediaserver:
   restart: always
   ports:
     - 9000:9000
-    - 9090:9090    
+    - 9005:9005
+    - 9010:9010
+    - 9090:9090
     - 3483:3483
     - 3483/udp:3483/udp
-    - 9010:9010
     - 5353/udp:5353/udp
   volumes:
     - /srv/music/:/mnt/music:ro

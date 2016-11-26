@@ -2,7 +2,7 @@
 if [ ! -d /mnt/state/etc ]; then
    mkdir -p /mnt/state/etc
    cp -pr /etc/squeezeboxserver.orig/* /mnt/state/etc
-   chown -R squeezeboxserver.nogroup /mnt/state/etc
+   chown -R squeezeboxserver.lms /mnt/state/etc
 fi
 # Automatically update to newer version if exists
 if [ -f /mnt/state/cache/updates/server.version ]; then
@@ -13,5 +13,5 @@ if [ -f /mnt/state/cache/updates/server.version ]; then
     # Keep a history for rollback in case
     # rm -f $UPDATE 
 fi
-chown squeezeboxserver.nogroup /mnt/state /srv/playlists
-/usr/bin/supervisord -c /etc/supervisord.conf
+chown lms.lms /mnt/playlists
+chown squeezeboxserver.lms -R /mnt/state
