@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:latest
 MAINTAINER Justifiably <justifiably@ymail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -61,11 +61,11 @@ RUN mkdir -p /mnt/state/etc && \
 
 RUN mkdir -p /var/log/supervisor
 COPY ./supervisord.conf /etc/
-COPY ./start-lms.sh /usr/local/bin
+COPY ./start-lms.sh /
 COPY avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 
 VOLUME ["/mnt/state","/srv/music","/srv/playlists"]
 EXPOSE 3483 3483/udp 9000 9090 9010
 
-CMD ["/usr/local/bin/start-lms.sh"]
+CMD ["/start-lms.sh"]
 
