@@ -28,22 +28,10 @@ RUN apt-get install -y --force-yes \
 
 # Dependencies for shairport (https://github.com/disaster123/shairport2_plugin/)
 RUN apt-get install -y --force-yes \
-    libcrypt-openssl-rsa-perl \
-    libio-socket-inet6-perl \
-    libwww-perl \
-    dbus avahi-daemon avahi-utils \
-    libio-socket-ssl-perl && \
-    wget -O /tmp/netsdp.deb http://www.inf.udec.cl/~diegocaro/rpi/libnet-sdp-perl_0.07-1_all.deb && \
-    dpkg -i /tmp/netsdp.deb && \
-    rm -f /tmp/netsdp.deb
-
-# Pre-compile helper app for shairport
-RUN apt-get install -y unzip build-essential libssl-dev libao-dev pkg-config
-
-RUN \
-    mkdir /tmp/st && \
-    wget -O /tmp/st/ShairTunes.zip https://raw.github.com/StuartUSA/shairport_plugin/master/ShairTunes.zip && \
-    (cd /tmp/st; unzip ShairTunes.zip; cd shairport_helper/src; make; cp -p shairport_helper /usr/local/bin)
+    libcrypt-openssl-rsa-perl libio-socket-inet6-perl libwww-perl avahi-utils libio-socket-ssl-perl && \
+    wget http://www.inf.udec.cl/~diegocaro/rpi/libnet-sdp-perl_0.07-1_all.deb && \
+    dpkg -i libnet-sdp-perl_0.07-1_all.deb && \
+    rm -f libnet-sdp-perl_0.07-1_all.deb
 
 ARG LMSDEB=http://downloads.slimdevices.com/nightly/7.9/sc/afcfc6d/logitechmediaserver_7.9.0~1480066117_all.deb
 RUN wget -O /tmp/lms.deb $LMSDEB && \
@@ -55,7 +43,7 @@ RUN echo "en_GB.UTF-8 UTF-8" >> /etc/locale.gen && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
 # Cleanup
-RUN apt-get -y remove wget unzip build-essential libssl-dev libssl-dev libao-dev pkg-config && \
+RUN apt-get -y remove wget && \
     apt-get -y autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
