@@ -46,7 +46,8 @@ RUN echo "en_GB.UTF-8 UTF-8" >> /etc/locale.gen && \
 RUN apt-get -y remove wget && \
     apt-get -y autoremove && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -f /core  # Junk in phusion image!?
         
 # Move config dir to allow editing convert.conf
 RUN useradd --system --uid 819 -M -s /bin/false -d /usr/share/squeezeboxserver -c "Logitech Media Server user" lms && \
@@ -56,16 +57,16 @@ RUN useradd --system --uid 819 -M -s /bin/false -d /usr/share/squeezeboxserver -
     ln -s /mnt/state/etc /etc/squeezeboxserver && \
     chown -R squeezeboxserver.lms /mnt/state
 
-RUN mkdir /etc/service/lms /etc/service/avahi /etc/service/dbus
+RUN mkdir /etc/service/lms /etc/service/avahi
 COPY lms-run.sh /etc/service/lms/run
 COPY avahi-run.sh /etc/service/avahi/run
-COPY dbus-run.sh /etc/service/dbus/run
-COPY lms-setup.sh dbus-setup.sh avahi-setup.sh startup.sh /
+COPY lms-setup.sh avahi-setup.sh startup.sh /
 COPY avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 
 
 VOLUME ["/mnt/state","/mnt/music","/mnt/playlists"]
-EXPOSE 3483 3483/udp 9000 9005 9010 9090 5353
+
+EXPOSE 3483 3483/udp 9000 9005 9010 9090 5353 5353/udp
 
 CMD ["/startup.sh"]
 
