@@ -1,5 +1,5 @@
 #!/bin/sh
 /lms-setup.sh
-/dbus-setup.sh
-/avahi-setup.sh
-exec /sbin/my_init
+exec /usr/sbin/squeezeboxserver --user lms --prefsdir /mnt/state/prefs --logdir /mnt/state/logs --cachedir /mnt/state/cache --charset=utf8
+
+

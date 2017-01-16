@@ -2,7 +2,7 @@
 if [ ! -d /mnt/state/etc ]; then
    mkdir -p /mnt/state/etc
    cp -pr /etc/squeezeboxserver.orig/* /mnt/state/etc
-   chown -R squeezeboxserver.lms /mnt/state/etc
+   chown -R lms.lms /mnt/state/etc
 fi
 # Automatically update to newer version if exists
 if [ -f /mnt/state/cache/updates/server.version ]; then
@@ -14,4 +14,4 @@ if [ -f /mnt/state/cache/updates/server.version ]; then
     # rm -f $UPDATE 
 fi
 chown lms.lms /mnt/playlists
-chown squeezeboxserver.lms -R /mnt/state
+chown lms.lms -R /mnt/state
