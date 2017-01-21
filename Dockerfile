@@ -16,11 +16,11 @@ RUN echo "deb http://www.deb-multimedia.org jessie main non-free" | tee -a /etc/
     flac \
     lame \
     sox \
+    ffmpeg \
     wavpack \
     --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-# ffmpeg inconsistent
 
 # Use a nightly release, can be updated in place without rebuilding image
 ARG LMSDEB=http://downloads.slimdevices.com/nightly/7.9/sc/58999af/logitechmediaserver_7.9.0~1484464959_all.deb
