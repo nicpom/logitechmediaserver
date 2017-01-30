@@ -23,7 +23,7 @@ RUN echo "deb http://www.deb-multimedia.org jessie main non-free" | tee -a /etc/
     rm -rf /var/lib/apt/lists/*
 
 # Use a nightly release, can be updated in place without rebuilding image
-ARG LMSDEB=http://downloads.slimdevices.com/nightly/7.9/sc/58999af/logitechmediaserver_7.9.0~1484464959_all.deb
+ARG LMSDEB=http://downloads.slimdevices.com/nightly/7.9/sc/52be1b6/logitechmediaserver_7.9.0~1485445004_all.deb
 RUN curl -o /tmp/lms.deb $LMSDEB && \
     dpkg -i /tmp/lms.deb && \
     rm -f  /tmp/lms.deb
