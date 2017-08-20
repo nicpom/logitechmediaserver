@@ -1,6 +1,6 @@
 logitechmediaserver:
   container_name: "logitechmediaserver"
-  image: justifiably/logitechmediaserver
+  image: nicpom/logitechmediaserver
   restart: always
   ports:
     - 9000:9000
